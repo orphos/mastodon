@@ -42,3 +42,7 @@ else
   Paperclip::Attachment.default_options[:path]           = (ENV['PAPERCLIP_ROOT_PATH'] || ':rails_root/public/system') + '/:class/:attachment/:id_partition/:style/:filename'
   Paperclip::Attachment.default_options[:url]            = (ENV['PAPERCLIP_ROOT_URL'] || '/system') + '/:class/:attachment/:id_partition/:style/:filename'
 end
+
+Paperclip.options[:content_type_mappings] = {
+  null: %w(image/jpeg image/png image/gif)
+}
