@@ -93,3 +93,7 @@ else
     url: ENV.fetch('PAPERCLIP_ROOT_URL', '/system') + '/:class/:attachment/:id_partition/:style/:filename',
   )
 end
+
+Paperclip.options[:content_type_mappings] = {
+  null: %w(image/jpeg image/png image/gif)
+}
