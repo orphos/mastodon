@@ -3,10 +3,6 @@
 namespace :mastodon do
   desc 'Execute daily tasks'
   task :daily do
-    Rake::Task['mastodon:feeds:clear'].invoke
-    Rake::Task['mastodon:media:clear'].invoke
-    Rake::Task['mastodon:users:clear'].invoke
-
     Rake::Task['mastodon:push:refresh'].invoke
   end
 
