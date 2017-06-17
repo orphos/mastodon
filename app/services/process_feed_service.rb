@@ -20,8 +20,6 @@ class ProcessFeedService < BaseService
   end
 
   class ProcessEntry
-    include AuthorExtractor
-
     def call(xml, account)
       @account = account
       @xml     = xml
@@ -42,11 +40,6 @@ class ProcessFeedService < BaseService
     private
 
     def create_status
-      if redis.exists("delete_upon_arrival:#{id}")
-        Rails.logger.debug "Delete for status #{id} was queued, ignoring"
-        return
-      end
-
       Rails.logger.debug "Creating remote status #{id}"
       status, just_created = status_from_xml(@xml)
 
@@ -89,13 +82,7 @@ class ProcessFeedService < BaseService
     def delete_status
       Rails.logger.debug "Deleting remote status #{id}"
       status = Status.find_by(uri: id)
-
-      if status.nil?
-        redis.setex("delete_upon_arrival:#{id}", 6 * 3_600, id)
-      else
-        RemoveStatusService.new.call(status)
-      end
-
+      RemoveStatusService.new.call(status) unless status.nil?
       nil
     end
 
@@ -121,7 +108,7 @@ class ProcessFeedService < BaseService
       # If that author cannot be found, don't record the status (do not misattribute)
       if account?(entry)
         begin
-          account = author_from_xml(entry)
+          account = find_or_resolve_account(acct(entry))
           return [nil, false] if account.nil?
         rescue Goldfinger::Error
           return [nil, false]
@@ -154,6 +141,10 @@ class ProcessFeedService < BaseService
       media_from_xml(status, entry)
 
       [status, true]
+    end
+
+    def find_or_resolve_account(acct)
+      FollowRemoteAccountService.new.call(acct)
     end
 
     def find_or_resolve_status(parent, uri, url)
@@ -285,8 +276,12 @@ class ProcessFeedService < BaseService
       !xml.at_xpath('./xmlns:author', xmlns: TagManager::XMLNS).nil?
     end
 
-    def redis
-      Redis.current
+    def acct(xml = @xml)
+      username = xml.at_xpath('./xmlns:author/xmlns:name', xmlns: TagManager::XMLNS).content
+      url      = xml.at_xpath('./xmlns:author/xmlns:uri', xmlns: TagManager::XMLNS).content
+      domain   = Addressable::URI.parse(url).normalize.host
+
+      "#{username}@#{domain}"
     end
   end
 end

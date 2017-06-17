@@ -75,8 +75,10 @@ namespace :mastodon do
 
     desc 'Re-subscribes to soon expiring PuSH subscriptions'
     task refresh: :environment do
-      # No-op
-      # This task is now executed via sidekiq-scheduler
+      Account.expiring(1.day.from_now).find_each do |a|
+        Rails.logger.debug "PuSH re-subscribing to #{a.acct}"
+        SubscribeService.new.call(a)
+      end
     end
   end
 
