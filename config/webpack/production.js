@@ -3,7 +3,6 @@
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const zopfli = require('@gfx/zopfli');
 const sharedConfig = require('./shared.js');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const OfflinePlugin = require('offline-plugin');
@@ -60,9 +59,6 @@ module.exports = merge(sharedConfig, {
 
   plugins: [
     new CompressionPlugin({
-      algorithm(input, compressionOptions, callback) {
-        return zopfli.gzip(input, compressionOptions, callback);
-      },
       test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
     }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
