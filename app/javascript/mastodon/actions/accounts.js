@@ -145,14 +145,12 @@ export function fetchAccountFail(id, error) {
 export function followAccount(id, reblogs = true) {
   return (dispatch, getState) => {
     const alreadyFollowing = getState().getIn(['relationships', id, 'following']);
-    const locked = getState().getIn(['accounts', id, 'locked'], false);
-
-    dispatch(followAccountRequest(id, locked));
+    dispatch(followAccountRequest(id));
 
     api(getState).post(`/api/v1/accounts/${id}/follow`, { reblogs }).then(response => {
       dispatch(followAccountSuccess(response.data, alreadyFollowing));
     }).catch(error => {
-      dispatch(followAccountFail(error, locked));
+      dispatch(followAccountFail(error));
     });
   };
 };
@@ -169,12 +167,10 @@ export function unfollowAccount(id) {
   };
 };
 
-export function followAccountRequest(id, locked) {
+export function followAccountRequest(id) {
   return {
     type: ACCOUNT_FOLLOW_REQUEST,
     id,
-    locked,
-    skipLoading: true,
   };
 };
 
@@ -183,16 +179,13 @@ export function followAccountSuccess(relationship, alreadyFollowing) {
     type: ACCOUNT_FOLLOW_SUCCESS,
     relationship,
     alreadyFollowing,
-    skipLoading: true,
   };
 };
 
-export function followAccountFail(error, locked) {
+export function followAccountFail(error) {
   return {
     type: ACCOUNT_FOLLOW_FAIL,
     error,
-    locked,
-    skipLoading: true,
   };
 };
 
@@ -200,7 +193,6 @@ export function unfollowAccountRequest(id) {
   return {
     type: ACCOUNT_UNFOLLOW_REQUEST,
     id,
-    skipLoading: true,
   };
 };
 
@@ -209,7 +201,6 @@ export function unfollowAccountSuccess(relationship, statuses) {
     type: ACCOUNT_UNFOLLOW_SUCCESS,
     relationship,
     statuses,
-    skipLoading: true,
   };
 };
 
@@ -217,7 +208,6 @@ export function unfollowAccountFail(error) {
   return {
     type: ACCOUNT_UNFOLLOW_FAIL,
     error,
-    skipLoading: true,
   };
 };
 
