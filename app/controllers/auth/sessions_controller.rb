@@ -9,6 +9,7 @@ class Auth::SessionsController < Devise::SessionsController
   skip_before_action :require_functional!
 
   prepend_before_action :authenticate_with_two_factor, if: :two_factor_enabled?, only: [:create]
+
   before_action :set_instance_presenter, only: [:new]
   before_action :set_body_classes
 

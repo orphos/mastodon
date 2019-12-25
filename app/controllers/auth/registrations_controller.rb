@@ -10,13 +10,13 @@ class Auth::RegistrationsController < Devise::RegistrationsController
   before_action :set_instance_presenter, only: [:new, :create, :update]
   before_action :set_body_classes, only: [:new, :create, :edit, :update]
   before_action :require_not_suspended!, only: [:update]
+  prepend_before_action :check_recaptcha, only: [:create]
 
   skip_before_action :require_functional!, only: [:edit, :update]
 
   def new
     super(&:build_invite_request)
   end
-  prepend_before_action :check_recaptcha, only: [:create]
 
   def destroy
     not_found
@@ -110,6 +110,7 @@ class Auth::RegistrationsController < Devise::RegistrationsController
   def require_not_suspended!
     forbidden if current_account.suspended?
   end
+
   def check_recaptcha
     unless is_human?
       self.resource = resource_class.new sign_up_params
