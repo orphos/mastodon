@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Paperclip::DataUriAdapter.register
+Paperclip::ResponseWithLimitAdapter.register
 
 Paperclip.interpolates :filename do |attachment, style|
   if style == :original
@@ -113,5 +114,7 @@ else
 end
 
 Paperclip.options[:content_type_mappings] = {
-  null: %w(image/jpeg image/png image/gif)
+  null: %w(image/jpeg image/png image/gif),
+  csv: Import::FILE_TYPES
 }
+
