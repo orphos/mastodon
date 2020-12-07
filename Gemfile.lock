@@ -172,7 +172,7 @@ GEM
       railties (>= 4.0.1)
     hashdiff (0.3.2)
     highline (1.7.8)
-    hiredis (0.6.1)
+    hiredis (0.6.3)
     htmlentities (4.3.4)
     http (2.2.1)
       addressable (~> 2.3)
