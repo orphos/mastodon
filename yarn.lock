@@ -2680,9 +2680,9 @@ events@^1.0.0, events@^1.1.1, events@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
 
-eventsource@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-0.2.1.tgz#662bf85f376e73b5c34c2ee17db566b8419a6232"
+eventsource@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.0.7.tgz#8fbc72c93fcd34088090bc0a4e64f4b5cee6d8d0"
   dependencies:
     original "^1.0.0"
 

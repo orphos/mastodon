@@ -30,7 +30,7 @@
     "enzyme": "^2.7.1",
     "es6-promise": "^3.2.1",
     "escape-html": "^1.0.3",
-    "eventsource": "^0.2.1",
+    "eventsource": "^1.0.7",
     "express": "^4.14.1",
     "http-link-header": "^0.8.0",
     "immutable": "^3.8.1",
