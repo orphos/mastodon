@@ -92,7 +92,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano-yarn'
-  gem 'capistrano-faster-assets', '~> 1.0'
+  gem 'capistrano-faster-assets', '~> 1.1'
 end
 
 group :production do
